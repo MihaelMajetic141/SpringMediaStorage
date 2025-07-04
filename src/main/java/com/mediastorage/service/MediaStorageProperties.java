@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-@ConfigurationProperties(prefix = "app-image-storage")
+@ConfigurationProperties(prefix = "app-media-storage")
 @Component
-public record ImageStorageProperties(
+public record MediaStorageProperties(
     String basePath,
     Set<String> allowedMimeTypes
 ) {
-    public ImageStorageProperties() {
+    public MediaStorageProperties() {
         this(
-            "./images",
+            "./media",
             Set.of("image/jpeg", "image/png", "image/gif", "image/webp")
         );
     }

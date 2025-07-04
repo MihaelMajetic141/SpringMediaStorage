@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document("image_metadata")
-public record ImageMetadata(
+@Document("media_metadata")
+public record MediaMetadata(
         @Id ObjectId id,
         String originalName,
         String storedName,

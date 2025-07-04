@@ -1,8 +1,8 @@
 package com.mediastorage.service;
 
 
-import com.mediastorage.model.ImageMetadata;
-import com.mediastorage.repository.ImageMetadataRepository;
+import com.mediastorage.model.MediaMetadata;
+import com.mediastorage.repository.MediaMetadataRepository;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.core.io.Resource;
@@ -16,20 +16,20 @@ import java.time.Instant;
 
 @Service
 @AllArgsConstructor
-public class ImageService {
+public class MediaService {
 
-    private final ImageStorageProperties properties;
-    private final ImageMetadataRepository metadataRepository;
-    private final LocalImageStorageService storageService;
+    private final MediaStorageProperties properties;
+    private final MediaMetadataRepository metadataRepository;
+    private final LocalMediaStorageService storageService;
 
-    public ImageMetadata uploadImage(MultipartFile file, String ownerId) throws IOException {
+    public MediaMetadata uploadMedia(MultipartFile file, String ownerId) throws IOException {
         validateImage(file);
         String storagePath;
         try(InputStream inputStream = file.getInputStream()) {
             storagePath = storageService.storeFile(inputStream, file.getOriginalFilename());
         }
 
-        ImageMetadata metadata = new ImageMetadata(
+        MediaMetadata metadata = new MediaMetadata(
                 ObjectId.get(),
                 file.getOriginalFilename(),
                 storagePath,
@@ -43,11 +43,11 @@ public class ImageService {
     }
 
     public Resource getImageResource(String imageId) throws IOException {
-        ImageMetadata imageMetadata = getImageMetadata(imageId);
-        return storageService.getFileResource(imageMetadata.storedName());
+        MediaMetadata mediaMetadata = getImageMetadata(imageId);
+        return storageService.getFileResource(mediaMetadata.storedName());
     }
 
-    public ImageMetadata getImageMetadata(String imageId) throws IOException {
+    public MediaMetadata getImageMetadata(String imageId) throws IOException {
         ObjectId objectId = new ObjectId(imageId);
         return metadataRepository.findById(objectId).orElseThrow(
                 () -> new FileNotFoundException("File not found")

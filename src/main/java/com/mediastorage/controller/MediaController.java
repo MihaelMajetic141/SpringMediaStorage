@@ -1,8 +1,8 @@
 package com.mediastorage.controller;
 
 
-import com.mediastorage.model.ImageMetadata;
-import com.mediastorage.service.ImageService;
+import com.mediastorage.model.MediaMetadata;
+import com.mediastorage.service.MediaService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,19 +18,19 @@ import java.util.Map;
 @RestController
 @RequestMapping("/media")
 @AllArgsConstructor
-public class ImageController {
+public class MediaController {
 
-    private final ImageService imageService;
+    private final MediaService mediaService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(
+    public ResponseEntity<?> uploadMedia(
             @RequestParam("file") MultipartFile file
     ) {
         // ToDo: Get from parsed jwt claim.
         String ownerId = "ownerId";
 
         try {
-            ImageMetadata metadata = imageService.uploadImage(file, ownerId);
+            MediaMetadata metadata = mediaService.uploadMedia(file, ownerId);
 
             // ToDo: Create a class
             return ResponseEntity.ok(
@@ -49,12 +49,12 @@ public class ImageController {
     }
 
     @GetMapping("/download/{fileId}")
-    public ResponseEntity<?> downloadImage(
+    public ResponseEntity<?> downloadMedia(
             @PathVariable String fileId
     ) {
         try {
-            ImageMetadata metadata = imageService.getImageMetadata(fileId);
-            Resource resource = imageService.getImageResource(fileId);
+            MediaMetadata metadata = mediaService.getImageMetadata(fileId);
+            Resource resource = mediaService.getImageResource(fileId);
 
             return ResponseEntity
                     .ok()

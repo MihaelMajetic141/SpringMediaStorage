@@ -1,6 +1,5 @@
 package com.mediastorage.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -12,16 +11,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 
 @Service
-public class LocalImageStorageService {
+public class LocalMediaStorageService {
 
     private final Path rootPath;
 
-    public LocalImageStorageService(ImageStorageProperties properties) {
+    public LocalMediaStorageService(MediaStorageProperties properties) {
         this.rootPath = Paths.get(properties.basePath());
     }
 
@@ -60,7 +58,7 @@ public class LocalImageStorageService {
 
     private String getFileExtension(String filename) {
         int lastDot = filename.lastIndexOf('.');
-        return lastDot == -1 ? "" : filename.substring(lastDot + 1);
+        return lastDot != -1 ? filename.substring(lastDot + 1) : "";
     }
 
 }
